@@ -22,7 +22,10 @@ export const TodoList = () => {
     >
       <h2>Список задач (ToDo)</h2>
 
-      <form onSubmit={handleSubmit} style={{ display: "flex", gap: "10px" }}>
+      <form
+        onSubmit={handleSubmit}
+        style={{ display: "flex", gap: "10px", marginBottom: "20px" }}
+      >
         <input
           type="text"
           value={text}
@@ -53,18 +56,34 @@ export const TodoList = () => {
               justifyContent: "space-between",
               padding: "10px",
               borderBottom: "1px solid #eee",
+              backgroundColor: todo.completed ? "#f9f9f9" : "transparent",
             }}
           >
-            <span
-              onClick={() => toggleTodo(todo.id)}
+            <div
               style={{
-                textDecoration: todo.completed ? "line-through" : "none",
-                cursor: "pointer",
-                color: todo.completed ? "#888" : "#000",
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+                flex: 1,
               }}
             >
-              {todo.text}
-            </span>
+              {/* Чекбокс для отметки выполнения */}
+              <input
+                type="checkbox"
+                checked={todo.completed}
+                onChange={() => toggleTodo(todo.id)}
+                style={{ cursor: "pointer", width: "18px", height: "18px" }}
+              />
+              <span
+                style={{
+                  textDecoration: todo.completed ? "line-through" : "none",
+                  color: todo.completed ? "#888" : "#000",
+                  wordBreak: "break-word",
+                }}
+              >
+                {todo.text}
+              </span>
+            </div>
             <button
               onClick={() => removeTodo(todo.id)}
               style={{
@@ -74,6 +93,7 @@ export const TodoList = () => {
                 borderRadius: "4px",
                 padding: "5px 10px",
                 cursor: "pointer",
+                marginLeft: "10px",
               }}
             >
               Удалить
