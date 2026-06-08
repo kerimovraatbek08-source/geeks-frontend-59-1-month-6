@@ -1,10 +1,14 @@
-import "./App.css";
-import { TodoList } from "./components/Todolist";
+import ProductForm from "./components/ProductForm";
+import ProductList from "./components/ProductList";
 
 function App() {
   return (
-    <div cla ssName="App">
-      <TodoList />
+    <div>
+      <h1>Каталог товаров</h1>
+
+      <ProductForm />
+
+      <ProductList />
     </div>
   );
 }
