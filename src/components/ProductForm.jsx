@@ -1,8 +1,11 @@
 import { useState } from "react";
-import { useProductStore } from "./useProductStore";
+
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+import { createProduct } from "../api/products";
 
 function ProductForm() {
-  const addProduct = useProductStore((state) => state.addProduct);
+  const queryClient = useQueryClient();
 
   const [form, setForm] = useState({
     title: "",
@@ -10,12 +13,24 @@ function ProductForm() {
     price: "",
   });
 
+  const mutation = useMutation({
+    mutationFn: createProduct,
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["products"],
+      });
+    },
+  });
+
   const submit = (e) => {
     e.preventDefault();
 
-    addProduct({
+    mutation.mutate({
       title: form.title,
+
       description: form.description,
+
       price: Number(form.price),
     });
 
@@ -29,25 +44,25 @@ function ProductForm() {
   return (
     <form onSubmit={submit}>
       <input
-        placeholder="Название"
+        placeholder="title"
         value={form.title}
         onChange={(e) => setForm({ ...form, title: e.target.value })}
       />
 
       <input
-        placeholder="Описание"
+        placeholder="description"
         value={form.description}
         onChange={(e) => setForm({ ...form, description: e.target.value })}
       />
 
       <input
         type="number"
-        placeholder="Цена"
+        placeholder="price"
         value={form.price}
         onChange={(e) => setForm({ ...form, price: e.target.value })}
       />
 
-      <button>Добавить</button>
+      <button>Создать</button>
     </form>
   );
 }
